@@ -15,7 +15,6 @@ public class PizzaBarRepository {
 
             Pizza pizzaFromMenu = new Pizza(name, pizzaID, price);
             pizzaMenu.add(pizzaFromMenu);
-
         }
         return pizzaMenu;
 
