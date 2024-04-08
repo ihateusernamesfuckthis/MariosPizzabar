@@ -17,7 +17,6 @@ public class PizzaBarRepository {
             pizzaMenu.add(pizzaFromMenu);
         }
         return pizzaMenu;
-
         /*
         Hvis dette skal fungere optimalt i PizzabarView,
         skal pizza klassen have en følgende toString metode:
