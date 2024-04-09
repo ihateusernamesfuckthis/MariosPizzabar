@@ -14,6 +14,7 @@ public class Order {
         this.orderID = counter;
         this.pizzas = new ArrayList<>();
         this.timeOfCreation = LocalDateTime.now();
+        this.completed = false;
     }
     public ArrayList<Pizza> getPizzas(){
         return this.pizzas;
