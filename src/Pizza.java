@@ -22,7 +22,7 @@ public class Pizza {
     }
     public String toString(){
         StringBuilder formattedString = new StringBuilder(this.number + ". " + this.name + ": ");
-        for (int i = 0; i < 30 - this.name.length(); i++) {
+        for (int i = 0; i < 30 - this.name.length() - String.valueOf(this.number).length(); i++) {
             formattedString.append(".");
         }
         formattedString.append(this.price);
