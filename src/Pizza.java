@@ -20,4 +20,14 @@ public class Pizza {
     public int getPrice() {
         return price;
     }
+    public String toString(){
+        StringBuilder formattedString = new StringBuilder(this.number + ". " + this.name + ": ");
+        for (int i = 0; i < 30 - this.name.length(); i++) {
+            formattedString.append(".");
+        }
+        formattedString.append(this.price);
+        formattedString.append(",-");
+
+        return formattedString.toString();
+    }
 }
