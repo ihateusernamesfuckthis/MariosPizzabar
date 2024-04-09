@@ -1,15 +1,21 @@
-import java.util.List;
+import java.time.LocalDateTime;
+import java.util.ArrayList;
 
 public class Order {
-    private List<Pizza> pizzas;
+    private ArrayList<Pizza> pizzas;
     private int orderID;
     private boolean completed;
     private static int counter;
+    private LocalDateTime timeOfCompletion;
+    private LocalDateTime timeOfCreation;
 
     public Order(){
-
+        counter++;
+        this.orderID = counter;
+        this.pizzas = new ArrayList<>();
+        this.timeOfCreation = LocalDateTime.now();
     }
-    public List<Pizza> getPizzas(){
+    public ArrayList<Pizza> getPizzas(){
         return this.pizzas;
     }
     public int getOrderID(){
@@ -22,6 +28,9 @@ public class Order {
 
     public void setCompleted(boolean completedStatus){
         this.completed = completedStatus;
+        if (this.completed){
+            this.timeOfCompletion = LocalDateTime.now();
+        }
     }
 
     public void addPizza(Pizza pizzaToAdded){
