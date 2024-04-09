@@ -4,7 +4,7 @@ import java.util.*;
 
 public class PizzaBarView {
 
-    public void view (){
+    public void view () throws FileNotFoundException {
         Scanner scan = new Scanner(System.in);
         boolean running = true;
         while (running) {
@@ -33,7 +33,7 @@ public class PizzaBarView {
                     sortOrders();
                     break;
                 default:
-                    System.out.println("Perfect!\n I will call you when your order is finished");
+                    System.out.println("try again");
             }
         }
         scan.close();
@@ -48,7 +48,7 @@ public class PizzaBarView {
         }
     }
 
-    public void takeOrder() {
+    public void takeOrder() throws FileNotFoundException {
         Scanner scan = new Scanner(System.in);
         ArrayList<Pizza> order = PizzaBarRepository.getOrders();
         System.out.print("What is your name?");
@@ -56,40 +56,64 @@ public class PizzaBarView {
         System.out.println("What would you like to order?");
         String firstOrder = scan.nextLine();
         System.out.println("Anything else? y/n");
-        String orderMore = scan.nextLine();
+        String orderMore = scan.nextLine().toLowerCase();
         if (orderMore.equals("y")) {
             System.out.println("Perfect!\n" + customerName + " I will call you when your order is finished");
         } else {
-            System.out.println("Perfect!\n" + customerName + " I will call you when your order is finished");
+            System.out.println("Wrong input only type y/n");
         }
         order.add(firstOrder);
-        scan.close();
-    }
-
-
-    public void editOrder() {
-        //edit vælg hvilket nummer
-
 
     }
 
-    public void deleteOrder() {
+
+    public void editOrder() throws FileNotFoundException {
+        Scanner scan = new Scanner(System.in);
+        ArrayList<Pizza> orderList = PizzaBarRepository.getPizzaMenu();
+        System.out.println("Here is the menu again");
+
+        for(Pizza pizza : orderList) {
+            System.out.print(pizza);
+        }
+
+        try {
+            System.out.println("Hello!\n what pizza would you like to remove?");
+            int customerRemove = scan.nextInt();
+            orderList.remove(customerRemove - 1);
+            System.out.println("what pizza would you like to get instead");
+            int customerAdd = scan.nextInt();
+            orderList.add(customerAdd);
+            System.out.println("your order is updated now");
+        } catch (InputMismatchException e) {
+            System.out.println("Please enter a valid integer.");
+            scan.nextLine();
+        }
+    }
+
+    public void deleteOrder() throws FileNotFoundException {
         Scanner scan = new Scanner(System.in);
         ArrayList<Pizza> pizzaMenu = PizzaBarRepository.getDeleteOrder();
+
         System.out.println("What is your name?");
         String customerName = scan.nextLine();
         System.out.println("Perfect. I found you in my system");
-        System.out.println("What would you like to remove from your order");
-        String removePizza = scan.nextLine();
-        pizzaMenu.remove(removePizza);
-        System.out.println("Your order looks like as you preferred");
-        for (Pizza pizza : pizzaMenu) {
-            System.out.println(pizza);
+
+        try {
+            System.out.println("What would you like to remove from your order?");
+            String removePizza = scan.nextLine();
+            pizzaMenu.remove(removePizza);
+            System.out.println("Your order looks like  as you preferred");
+            for (Pizza pizza : pizzaMenu) {
+                System.out.println(pizza);
+            }
+        } catch (InputMismatchException e) {
+            System.out.println("Please enter a valid pizza name.");
+            scan.nextLine();
         }
     }
 
 
-    public void handleOrder() {
+    public void handleOrder() throws FileNotFoundException {
         ArrayList<Order> orders = PizzaBarRepository.getOrders();
         Scanner scan = new Scanner(System.in);
         System.out.print("Hello, let me take your order\nWhat is your name?");
@@ -102,11 +126,12 @@ public class PizzaBarView {
                 System.out.println("Order for customer " + matchCustomer + " is now removed from the list.");
             }
         }
-        System.out.println("No order found for customer");
+        System.out.println("No order found for customer. Try again.");
     }
 
+
     public void sortOrders(){
-        ArrayList<Pizza> sortOrder = Order.setCompleted();
+        ArrayList<Pizza> sortOrder = PizzaBarRepository.setCompleted();
 
 //sort after time, quantity
         /*
