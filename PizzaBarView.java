@@ -9,7 +9,7 @@ public class PizzaBarView {
 
     public void showMenu() {
         System.out.print("Showing the menu");
-        for(Pizza pizza : pizzaMenu) {
+        for(Pizza pizza : pizzas) {
             System.out.print(pizzaBar.getName() + "-" + pizzaBar.getNumber() + "-" + pizzaBar.getPrice() + "kr");
         }
     }
@@ -65,6 +65,7 @@ public class PizzaBarView {
                     System.out.print(pizza.order()); // mangler customer id number for verify
                     break;
                 case 3:
+                    //cancel
                     pizzaBar.clear();
                     System.out.print("Your order has been cancelled");
                     break;
