@@ -16,8 +16,18 @@ public class Order {
         this.timeOfCreation = LocalDateTime.now();
         this.completed = false;
     }
+
+    public Order(int orderID, boolean completed){
+        this.orderID = orderID;
+        this.completed = completed;
+        this.pizzas = new ArrayList<>();
+    }
     public ArrayList<Pizza> getPizzas(){
         return this.pizzas;
+    }
+
+    public void setPizzas (ArrayList<Pizza> pizzas){
+        this.pizzas = pizzas;
     }
     public int getOrderID(){
         return this.orderID;
