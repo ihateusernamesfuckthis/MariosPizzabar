@@ -45,6 +45,7 @@ public class PizzaBarRepository {
     public static void addOrder(Order order) throws IOException {
         FileWriter writer = new FileWriter("./src/orderlist.txt", true);
         writeOrderToFile(order, writer);
+        writer.close();
     }
 
     public static void saveOrders(ArrayList<Order> orders) throws IOException {
@@ -52,6 +53,7 @@ public class PizzaBarRepository {
         for (Order order : orders) {
             writeOrderToFile(order, writer);
         }
+        writer.close();
     }
 
     public static void deleteOrder(int orderID) throws IOException {
@@ -95,6 +97,7 @@ public class PizzaBarRepository {
                 writer.write(" , ");
             }
         }
-        writer.write("//" + order.getOrderID() + "//" + order.getCompleted());
+        writer.write(" //" + order.getOrderID() + " // " + order.getCompleted() + "\n");
+
     }
 }

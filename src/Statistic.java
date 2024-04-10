@@ -21,7 +21,7 @@ public class Statistic {
             for (Pizza pizza : order.getPizzas()) {
                 PizzaStatistic existingStat = null;
                 for (PizzaStatistic soldPizza : mostSoldPizzas) {
-                    if (soldPizza.getPizza().equals(pizza)) {
+                    if (soldPizza.getPizza().getNumber() == pizza.getNumber()) {
                         existingStat = soldPizza;
                         break;
                     }

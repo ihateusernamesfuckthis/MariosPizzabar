@@ -51,4 +51,20 @@ public class Order {
     public void removePizza(Pizza pizza){
         this.pizzas.remove(pizza);
     }
+
+    public String toString(){
+        StringBuilder order = new StringBuilder();
+        order.append(this.orderID);
+        order.append("[");
+        int counter = 1;
+        for (Pizza pizza : this.pizzas){
+            order.append(pizza.getNumber());
+            if (counter != this.pizzas.size()){
+                order.append(", ");
+            }
+            counter++;
+        }
+        order.append("]");
+        return order.toString();
+    }
 }

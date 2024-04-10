@@ -1,0 +1,3 @@
+Amerikaner 2 53 //2 // true
+Mafia 14 61 //3 // true
+Capricciosa 10 61 , Amerikaner 2 53 //4 // true
