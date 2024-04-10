@@ -1,5 +1,4 @@
 import java.io.FileNotFoundException;
-import java.sql.SQLOutput;
 import java.util.*;
 
 public class PizzaBarView {
@@ -50,7 +49,7 @@ public class PizzaBarView {
 
     public void takeOrder() throws FileNotFoundException {
         Scanner scan = new Scanner(System.in);
-        ArrayList<Pizza> order = PizzaBarRepository.getOrders();
+        ArrayList<String> order = PizzaBarRepository.getOrders();
         System.out.print("What is your name?");
         String customerName = scan.nextLine();
         System.out.println("What would you like to order?");
@@ -120,7 +119,7 @@ public class PizzaBarView {
         String matchCustomer = scan.nextLine();
 
         for (Order order : orders) {
-            if (order.getNumber().equals(matchCustomer)) {
+            if (order.getName().equals(matchCustomer)) {
                 order.setCompleted(true);
                 orders.remove(order);
                 System.out.println("Order for customer " + matchCustomer + " is now removed from the list.");
@@ -130,13 +129,14 @@ public class PizzaBarView {
     }
 
 
-    public void sortOrders(){
-        ArrayList<Pizza> sortOrder = PizzaBarRepository.setCompleted();
 
-//sort after time, quantity
+    public void sortOrders(){
+      //  ArrayList<Pizza> sortOrder = Order.setCompleted();
+
         /*
         sortOrder.add(Pizza.of());
         collection.sort(sortOrder);
+
 
          System.out.println("Sorted after time:");
         for (Pizza time : sortOrder) {
@@ -146,7 +146,7 @@ public class PizzaBarView {
     }
 
 
-    public  void getStatistic(int revenue, int mostSoldPizzas) {
+    public  void getStatistic(int mostSoldPizzas, int revenue) {
         Scanner scan = new Scanner(System.in);
         System.out.println("What statistic would you like to view?");
         System.out.println("Enter 1: for most sold pizzas");
