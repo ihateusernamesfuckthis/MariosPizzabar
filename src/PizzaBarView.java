@@ -3,13 +3,14 @@ import java.util.*;
 
 public class PizzaBarView {
 
-    public void view () throws FileNotFoundException {
+    public void view() throws FileNotFoundException {
         Scanner scan = new Scanner(System.in);
+        ArrayList<Order> orders = new ArrayList();
         boolean running = true;
         while (running) {
             System.out.print("What Would You Like to Change?");
             System.out.print("Enter 1: take order");
-            System.out.print("Enter 2: add order");
+            System.out.print("Enter 2: edit order");
             System.out.print("Enter 3: cancel order");
             System.out.print("Enter 4: view statistics");
             System.out.print("Enter 5: sort");
@@ -17,19 +18,19 @@ public class PizzaBarView {
             int choose = scan.nextInt();
             switch (choose) {
                 case 1:
-                   takeOrder();
+                    takeOrder(orders);
                     break;
                 case 2:
-                   editOrder();
+                    editOrder(orders);
                     break;
                 case 3:
-                    deleteOrder();
+                    deleteOrder(orders);
                     break;
                 case 4:
-                    getStatistic();
+                    getStatistic(orders);
                     break;
                 case 5:
-                    sortOrders();
+                    sortOrders(orders);
                     break;
                 default:
                     System.out.println("try again");
@@ -39,49 +40,52 @@ public class PizzaBarView {
 
     }
 
-    public void showMenu() throws FileNotFoundException {
-        ArrayList<Pizza> pizzaMenu = PizzaBarRepository.getPizzaMenu();
+    public void showMenu(ArrayList<Pizza> pizzaMenu) throws FileNotFoundException {
         System.out.print("Showing the menu");
-        for(Pizza pizza : pizzaMenu) {
+        for (Pizza pizza : pizzaMenu) {
             System.out.print(pizza);
         }
     }
 
-    public void takeOrder() throws FileNotFoundException {
+    public void takeOrder(ArrayList<Order> orders) throws FileNotFoundException {
         Scanner scan = new Scanner(System.in);
-        ArrayList<String> order = PizzaBarRepository.getOrders();
-        System.out.print("What is your name?");
-        String customerName = scan.nextLine();
-        System.out.println("What would you like to order?");
-        String firstOrder = scan.nextLine();
-        System.out.println("Anything else? y/n");
-        String orderMore = scan.nextLine().toLowerCase();
-        if (orderMore.equals("y")) {
-            System.out.println("Perfect!\n" + customerName + " I will call you when your order is finished");
-        } else {
-            System.out.println("Wrong input only type y/n");
-        }
-        order.add(firstOrder);
+        Order order = new Order();
+        ArrayList<Pizza> pizzaMenu = PizzaBarRepository.getPizzaMenu();
+        showMenu(pizzaMenu);
+        String orderMore;
+        do {
+            System.out.println("What number would you like to order?");
+            int desiredPizzaNumber = scan.nextInt();
 
+            for (Pizza pizza : pizzaMenu) {
+                if (pizza.getNumber() == desiredPizzaNumber) {
+                    order.addPizza(pizza);
+                    break;
+                }
+            }
+            System.out.println("If anything else type y");
+            orderMore = scan.nextLine().toLowerCase();
+        } while (orderMore.equals("y"));
+        System.out.println("Order created");
+        orders.add(order);
     }
 
 
-    public void editOrder() throws FileNotFoundException {
+    public void editOrder(ArrayList<Order> orders) throws FileNotFoundException {
         Scanner scan = new Scanner(System.in);
-        ArrayList<Pizza> orderList = PizzaBarRepository.getPizzaMenu();
-        System.out.println("Here is the menu again");
+        System.out.println("What order ID would you like to edit?");
 
-        for(Pizza pizza : orderList) {
+        for (Pizza pizza : orders) {
             System.out.print(pizza);
         }
 
         try {
             System.out.println("Hello!\n what pizza would you like to remove?");
             int customerRemove = scan.nextInt();
-            orderList.remove(customerRemove - 1);
+            orders.remove(customerRemove - 1);
             System.out.println("what pizza would you like to get instead");
             int customerAdd = scan.nextInt();
-            orderList.add(customerAdd);
+            orders.add(customerAdd);
             System.out.println("your order is updated now");
         } catch (InputMismatchException e) {
             System.out.println("Please enter a valid integer.");
@@ -89,7 +93,7 @@ public class PizzaBarView {
         }
     }
 
-    public void deleteOrder() throws FileNotFoundException {
+    public void deleteOrder(ArrayList<Order> orders) throws FileNotFoundException {
         Scanner scan = new Scanner(System.in);
         ArrayList<Pizza> pizzaMenu = PizzaBarRepository.getDeleteOrder();
 
@@ -112,8 +116,7 @@ public class PizzaBarView {
     }
 
 
-    public void handleOrder() throws FileNotFoundException {
-        ArrayList<Order> orders = PizzaBarRepository.getOrders();
+    public void handleOrder(ArrayList<Order> orders) throws FileNotFoundException {
         Scanner scan = new Scanner(System.in);
         System.out.print("Hello, let me take your order\nWhat is your name?");
         String matchCustomer = scan.nextLine();
@@ -129,9 +132,8 @@ public class PizzaBarView {
     }
 
 
-
-    public void sortOrders(){
-      //  ArrayList<Pizza> sortOrder = Order.setCompleted();
+    public void sortOrders(ArrayList<Order> orders) {
+        //  ArrayList<Pizza> sortOrder = Order.setCompleted();
 
         /*
         sortOrder.add(Pizza.of());
@@ -146,14 +148,18 @@ public class PizzaBarView {
     }
 
 
-    public  void getStatistic(int mostSoldPizzas, int revenue) {
+    public void getStatistic(ArrayList<Order> orders) {
         Scanner scan = new Scanner(System.in);
+        Statistic statistic = new Statistic();
+        ArrayList<PizzaStatistic> mostSoldPizzas = statistic.getMostSoldPizzas(orders);
+        int revenue = statistic.getRevenue(orders);
+
         System.out.println("What statistic would you like to view?");
         System.out.println("Enter 1: for most sold pizzas");
-        System.out.println("Enter : for most sold pizzas");
+        System.out.println("Enter 2: for most revenue");
 
         int choseStatistic = scan.nextInt();
-        switch(choseStatistic) {
+        switch (choseStatistic) {
             case 1:
                 System.out.println("The most sold pizza is " + mostSoldPizzas);
                 break;
