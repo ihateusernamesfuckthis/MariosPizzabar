@@ -1,19 +1,23 @@
 import java.io.FileNotFoundException;
+import java.io.IOException;
 import java.util.*;
 
 public class PizzaBarView {
 
-    public void view() throws FileNotFoundException {
+    public PizzaBarView (){
+
+    }
+    public void view() throws IOException {
         Scanner scan = new Scanner(System.in);
         ArrayList<Order> orders = new ArrayList();
         boolean running = true;
         while (running) {
-            System.out.print("What Would You Like to Change?");
-            System.out.print("Enter 1: take order");
-            System.out.print("Enter 2: edit order");
-            System.out.print("Enter 3: cancel order");
-            System.out.print("Enter 4: view statistics");
-            System.out.print("Enter 5: sort");
+            System.out.println("Enter 1: take order");
+            System.out.println("Enter 2: edit order");
+            System.out.println("Enter 3: delete order");
+            System.out.println("Enter 4: handle order");
+            System.out.println("Enter 5: view statistics");
+            System.out.println("Enter 6: sort");
 
             int choose = scan.nextInt();
             switch (choose) {
@@ -27,9 +31,12 @@ public class PizzaBarView {
                     deleteOrder(orders);
                     break;
                 case 4:
-                    getStatistic(orders);
+                    handleOrder(orders);
                     break;
                 case 5:
+                    getStatistic(orders);
+                    break;
+                case 6:
                     sortOrders(orders);
                     break;
                 default:
@@ -37,13 +44,15 @@ public class PizzaBarView {
             }
         }
         scan.close();
+        PizzaBarRepository.
+                saveOrders(orders);
 
     }
 
     public void showMenu(ArrayList<Pizza> pizzaMenu) throws FileNotFoundException {
-        System.out.print("Showing the menu");
+        System.out.println("Showing the menu");
         for (Pizza pizza : pizzaMenu) {
-            System.out.print(pizza);
+            System.out.println(pizza);
         }
     }
 
@@ -56,6 +65,7 @@ public class PizzaBarView {
         do {
             System.out.println("What number would you like to order?");
             int desiredPizzaNumber = scan.nextInt();
+            scan.nextLine();
 
             for (Pizza pizza : pizzaMenu) {
                 if (pizza.getNumber() == desiredPizzaNumber) {
@@ -67,6 +77,7 @@ public class PizzaBarView {
             orderMore = scan.nextLine().toLowerCase();
         } while (orderMore.equals("y"));
         System.out.println("Order created");
+        System.out.println("Your order ID is: " + order.getOrderID());
         orders.add(order);
     }
 
@@ -95,40 +106,31 @@ public class PizzaBarView {
 
     public void deleteOrder(ArrayList<Order> orders) throws FileNotFoundException {
         Scanner scan = new Scanner(System.in);
-        ArrayList<Pizza> pizzaMenu = PizzaBarRepository.getDeleteOrder();
 
-        System.out.println("What is your name?");
-        String customerName = scan.nextLine();
-        System.out.println("Perfect. I found you in my system");
-
-        try {
-            System.out.println("What would you like to remove from your order?");
-            String removePizza = scan.nextLine();
-            pizzaMenu.remove(removePizza);
-            System.out.println("Your order looks like  as you preferred");
-            for (Pizza pizza : pizzaMenu) {
-                System.out.println(pizza);
-            }
-        } catch (InputMismatchException e) {
-            System.out.println("Please enter a valid pizza name.");
-            scan.nextLine();
+        System.out.println("What is your orderId?");
+        int customerId = scan.nextInt();
+        Order orderToDelete = findOrder(customerId, orders);
+        if (orderToDelete == null) {
+            System.out.println("Your order was not found");
+            return;
         }
+        orders.remove(orderToDelete);
+        System.out.println("Your order has been deleted");
     }
 
 
     public void handleOrder(ArrayList<Order> orders) throws FileNotFoundException {
         Scanner scan = new Scanner(System.in);
-        System.out.print("Hello, let me take your order\nWhat is your name?");
-        String matchCustomer = scan.nextLine();
+        System.out.print("Hello, what is your order ID?");
+        int customerOrderId = scan.nextInt();
 
         for (Order order : orders) {
-            if (order.getName().equals(matchCustomer)) {
+            if (order.getOrderID() == (customerOrderId)) {
                 order.setCompleted(true);
-                orders.remove(order);
-                System.out.println("Order for customer " + matchCustomer + " is now removed from the list.");
+                System.out.println("Order for customer " + customerOrderId + " is now picked up");
             }
         }
-        System.out.println("No order found for customer. Try again.");
+        System.out.println("No order found for customer.");
     }
 
 
@@ -161,7 +163,10 @@ public class PizzaBarView {
         int choseStatistic = scan.nextInt();
         switch (choseStatistic) {
             case 1:
-                System.out.println("The most sold pizza is " + mostSoldPizzas);
+                System.out.println("The most sold pizza is ");
+                for(PizzaStatistic mostSold : mostSoldPizzas){
+                    System.out.println(mostSold.getPizza().getName() + ": " + mostSold.getQuantity());
+                }
                 break;
             case 2:
                 System.out.println("The total earnings " + revenue + " kr");
@@ -170,5 +175,14 @@ public class PizzaBarView {
                 System.out.println("Try again");
 
         }
+    }
+
+    private Order findOrder(int orderID, ArrayList<Order> orders) {
+        for (Order order : orders) {
+            if (orderID == order.getOrderID()) {
+                return order;
+            }
+        }
+        return null;
     }
 }
