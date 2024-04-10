@@ -3,7 +3,7 @@ import java.io.IOException;
 import java.util.*;
 
 public class PizzaBarView {
-
+    public static Scanner scan = new Scanner(System.in);
     public PizzaBarView (){
 
     }
@@ -84,36 +84,128 @@ public class PizzaBarView {
 
     public void editOrder(ArrayList<Order> orders) throws FileNotFoundException {
         Scanner scan = new Scanner(System.in);
-        System.out.println("What order ID would you like to edit?");
         ArrayList<Pizza> pizzaMenu = PizzaBarRepository.getPizzaMenu();
-        for(Order order: orders) {
-            if(order.getOrderId() == desiredOrderId) {
-                while(true) {
-                    System.out.println("What pizza would you like to replace.\n0. To exit.");
-                    ArrayList<Pizza> pizzas = order.getPizzas();
-                    int index = 1;
-                    for(Pizza pizza: pizzas) {
-                        System.out.println(index + ". " + pizza);
+        boolean editOrderMenu = true;
+        while(editOrderMenu) {
+            System.out.println("What order ID would you like to edit?\n0. To exit edit order menu");
+            int desiredOrderId = scan.nextInt();
+            scan.nextLine();
+            if(desiredOrderId == 0){
+                editOrderMenu = false;
+            } else {
+                int index = 0;
+                boolean found = false;
+                for(int i = 0; i < orders.size(); i++){
+                    if(orders.get(i).getOrderID() == desiredOrderId) {
+                        index = i;
+                        found = true;
                     }
-                    int editDesiredPizza = scan.nextInt();
-                    scan.nextLine();
-                    if(editDesiredPizza == 0) {
-                        break;
-                    } else {
-                        for(Pizza pizza: pizzaMenu) {
-                            System.out.println(pizza);
-                        }
-                        System.out.println("What pizza number to replace with?");
-                        int desiredPizzaNum = scan.nextInt();
+                }
+                if(found) {
+                    boolean editingOptions = true;
+                    Order order = orders.get(index);
+                    ArrayList<Pizza> pizzasInOrder = order.getPizzas();
+                    while(editingOptions) {
+                        System.out.println("1. Replace pizza");
+                        System.out.println("2. Add pizza");
+                        System.out.println("3. Remove pizza");
+                        System.out.println("4. Exit to main menu");
+                        int desiredOption = scan.nextInt();
                         scan.nextLine();
-                        pizzas.remove(editDesiredPizza-1);
-                        pizzas.add(pizzaMenu.get(desiredPizzaNum-1))
+                        switch (desiredOption) {
+                            case 1:
+                                replacePizza(pizzasInOrder, pizzaMenu);
+                                break;
+                            case 2:
+                                addPizza(pizzaMenu, pizzasInOrder);
+                                break;
+                            case 3:
+                                removePizzaFromOrder(pizzasInOrder);
+                                break;
+                            case 4:
+                                editOrderMenu = false;
+                                editingOptions = false;
+                                break;
+                        }
                     }
+                } else {
+                    System.out.println("OrderID does not exist.");
+                    break;
                 }
             }
         }
-
     }
+    public void replacePizza(ArrayList<Pizza> pizzasInOrder, ArrayList<Pizza> pizzaMenu) {
+        while(true) {
+            System.out.println("What pizza would you like to replace.\n0. Exit to editing options.");
+            int indexInCase1 = 1;
+            for(Pizza pizza: pizzasInOrder) {
+                System.out.println(indexInCase1 + ". " + pizza);
+                indexInCase1++;
+            }
+            int editDesiredPizza = scan.nextInt();
+            scan.nextLine();
+            if(editDesiredPizza == 0) {
+                break;
+            } else {
+                for(Pizza pizza: pizzaMenu) {
+                    System.out.println(pizza);
+                }
+                System.out.println("What pizza number to replace with?");
+                int desiredPizzaNum = scan.nextInt();
+                scan.nextLine();
+                pizzasInOrder.remove(editDesiredPizza-1);
+                pizzasInOrder.add(pizzaMenu.get(desiredPizzaNum-1));
+            }
+            System.out.println("Pizza is now replaced.");
+            System.out.println("1. Replace more pizzas");
+            System.out.println("2. Back to editing options");
+            int decision = scan.nextInt();
+            scan.nextLine();
+            if(decision == 1) {
+                continue;
+            } else if(decision == 2) {
+                break;
+            }
+        }
+    }
+    public void addPizza(ArrayList<Pizza> pizzaMenu, ArrayList<Pizza> pizzasInOrder) {
+        for(Pizza pizza: pizzaMenu) {
+            System.out.println(pizza);
+        }
+        int decision;
+        do {
+            System.out.println("What pizza number would you like to add?");
+            int desiredPizzaNumber = scan.nextInt();
+            scan.nextLine();
+            Pizza desiredPizza = pizzaMenu.get(desiredPizzaNumber-1);
+            pizzasInOrder.add(desiredPizza);
+            System.out.println("Pizza is now added to the order.");
+            System.out.println("1. Add more.");
+            System.out.println("2. Back to editing options.");
+            decision = scan.nextInt();
+            scan.nextLine();
+        } while (decision == 1);
+    }
+    public void removePizzaFromOrder(ArrayList<Pizza> pizzasInOrder) {
+        int desiredOptionInCase3;
+        do {
+            for(int i = 0; i < pizzasInOrder.size(); i++) {
+                System.out.println(i+1 + ". " + pizzasInOrder.get(i));
+            }
+            System.out.println("What pizza to remove?");
+            int desiredPizza = scan.nextInt();
+            scan.nextLine();
+            pizzasInOrder.remove(desiredPizza-1);
+            System.out.println("Pizza is now removed from the order.");
+            System.out.println("1. Remove more.");
+            System.out.println("2. Back to editing options");
+            desiredOptionInCase3 = scan.nextInt();
+            scan.nextLine();
+
+        } while (desiredOptionInCase3 == 1);
+    }
+
 
     public void deleteOrder(ArrayList<Order> orders) throws FileNotFoundException {
         Scanner scan = new Scanner(System.in);
