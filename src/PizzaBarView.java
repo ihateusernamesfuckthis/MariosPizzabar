@@ -74,23 +74,34 @@ public class PizzaBarView {
     public void editOrder(ArrayList<Order> orders) throws FileNotFoundException {
         Scanner scan = new Scanner(System.in);
         System.out.println("What order ID would you like to edit?");
-
-        for (Pizza pizza : orders) {
-            System.out.print(pizza);
+        ArrayList<Pizza> pizzaMenu = PizzaBarRepository.getPizzaMenu();
+        for(Order order: orders) {
+            if(order.getOrderId() == desiredOrderId) {
+                while(true) {
+                    System.out.println("What pizza would you like to replace.\n0. To exit.");
+                    ArrayList<Pizza> pizzas = order.getPizzas();
+                    int index = 1;
+                    for(Pizza pizza: pizzas) {
+                        System.out.println(index + ". " + pizza);
+                    }
+                    int editDesiredPizza = scan.nextInt();
+                    scan.nextLine();
+                    if(editDesiredPizza == 0) {
+                        break;
+                    } else {
+                        for(Pizza pizza: pizzaMenu) {
+                            System.out.println(pizza);
+                        }
+                        System.out.println("What pizza number to replace with?");
+                        int desiredPizzaNum = scan.nextInt();
+                        scan.nextLine();
+                        pizzas.remove(editDesiredPizza-1);
+                        pizzas.add(pizzaMenu.get(desiredPizzaNum-1))
+                    }
+                }
+            }
         }
 
-        try {
-            System.out.println("Hello!\n what pizza would you like to remove?");
-            int customerRemove = scan.nextInt();
-            orders.remove(customerRemove - 1);
-            System.out.println("what pizza would you like to get instead");
-            int customerAdd = scan.nextInt();
-            orders.add(customerAdd);
-            System.out.println("your order is updated now");
-        } catch (InputMismatchException e) {
-            System.out.println("Please enter a valid integer.");
-            scan.nextLine();
-        }
     }
 
     public void deleteOrder(ArrayList<Order> orders) throws FileNotFoundException {
