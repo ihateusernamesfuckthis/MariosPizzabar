@@ -35,7 +35,8 @@ public class PizzaBarView {
                     handleOrder(orders);
                     break;
                 case 5:
-                    getStatistic(orders);
+                    ArrayList<Order> savedOrders = PizzaBarRepository.getOrders();
+                    getStatistic(savedOrders);
                     break;
                 case 6:
                     showQueue(orders);
@@ -120,10 +121,10 @@ public class PizzaBarView {
                         scan.nextLine();
                         switch (desiredOption) {
                             case 1:
-                                replacePizza(pizzasInOrder, pizzaMenu);
+                                replacePizzaInOrder(pizzasInOrder, pizzaMenu);
                                 break;
                             case 2:
-                                addPizza(pizzaMenu, pizzasInOrder);
+                                addPizzaToOrder(pizzaMenu, pizzasInOrder);
                                 break;
                             case 3:
                                 removePizzaFromOrder(pizzasInOrder);
@@ -131,6 +132,7 @@ public class PizzaBarView {
                             case 4:
                                 editOrderMenu = false;
                                 editingOptions = false;
+                                System.out.println("Order has been updated.");
                                 break;
                         }
                     }
@@ -141,7 +143,7 @@ public class PizzaBarView {
             }
         }
     }
-    public void replacePizza(ArrayList<Pizza> pizzasInOrder, ArrayList<Pizza> pizzaMenu) {
+    public void replacePizzaInOrder(ArrayList<Pizza> pizzasInOrder, ArrayList<Pizza> pizzaMenu) {
         while(true) {
             System.out.println("What pizza would you like to replace.\n0. Exit to editing options.");
             int indexInCase1 = 1;
@@ -175,7 +177,7 @@ public class PizzaBarView {
             }
         }
     }
-    public void addPizza(ArrayList<Pizza> pizzaMenu, ArrayList<Pizza> pizzasInOrder) {
+    public void addPizzaToOrder(ArrayList<Pizza> pizzaMenu, ArrayList<Pizza> pizzasInOrder) {
         for(Pizza pizza: pizzaMenu) {
             System.out.println(pizza);
         }

@@ -1,3 +1,2 @@
-Amerikaner 2 53 //2 // true
-Mafia 14 61 //3 // true
-Capricciosa 10 61 , Amerikaner 2 53 //4 // true
+Mafia 14 61 , Victoria 8 61 , Bertil 6 57//1//true
+Toronfo 9 61//2//false

@@ -97,7 +97,7 @@ public class PizzaBarRepository {
                 writer.write(" , ");
             }
         }
-        writer.write(" //" + order.getOrderID() + " // " + order.getCompleted() + "\n");
+        writer.write("//" + order.getOrderID() + "//" + order.getCompleted() + "\n");
 
     }
 }

@@ -18,6 +18,9 @@ public class Statistic {
         ArrayList<PizzaStatistic> mostSoldPizzas = new ArrayList<>();
 
         for (Order order : orders) {
+            if (!order.getCompleted()){
+                continue;
+            }
             for (Pizza pizza : order.getPizzas()) {
                 PizzaStatistic existingStat = null;
                 for (PizzaStatistic soldPizza : mostSoldPizzas) {
