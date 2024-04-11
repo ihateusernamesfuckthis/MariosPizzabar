@@ -6,14 +6,11 @@ public class Order {
     private int orderID;
     private boolean completed;
     private static int counter;
-    private LocalDateTime timeOfCompletion;
-    private LocalDateTime timeOfCreation;
 
     public Order(){
         counter++;
         this.orderID = counter;
         this.pizzas = new ArrayList<>();
-        this.timeOfCreation = LocalDateTime.now();
         this.completed = false;
     }
 
@@ -39,9 +36,6 @@ public class Order {
 
     public void setCompleted(boolean completedStatus){
         this.completed = completedStatus;
-        if (this.completed){
-            this.timeOfCompletion = LocalDateTime.now();
-        }
     }
 
     public void addPizza(Pizza pizzaToAdded){
